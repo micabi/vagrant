@@ -1,0 +1,2 @@
+# vagrant
+vagrantでwindowsにcentosを導入する方法
