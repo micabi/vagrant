@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--[if lt IE7 ]><html class="ie6" lang="ja"><![endif]-->
+<!--[if IE7 ]><html class="ie7" lang="ja"><![endif]-->
+<!--[if IE8 ]><!html class="ie8" lang="ja"><![endif]-->
+<!--[if IE9 ]><!html class="ie9" lang="ja"><![endif]-->
+<!--[if (gt IE9)!(IE)]><!--><html lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta name="viewport" content="width=device-width, user-scalable=yes" />
+	<title>develop</title>
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<!--
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+	-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+	<!--[if lt IE9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js/></script>
+	<![endif]-->
+</head>
+<body>
+<div id="wrap">
+<header>
+	<h1>Vagrant</h1>
+</header>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<aside>
+			<div class="col-md-2">
+					<ul>
+						<li><a href="#flow1">Cドライブにboxを追加する</a></li>
+						<li><a href="#flow2">Cドライブに新しいフォルダをつくる</a></li>
+						<li><a href="#flow3">boxを初期化する</a></li>
+						<li><a href="#flow4">仮想マシンに接続する</a></li>
+						<li><a href="#flow5">仮想マシンを設定していく (sshで接続したまま)</a></li>
+						<li><a href="#flow6">ファイアウォールを切る</a></li>
+						<li><a href="#flow7">キャッシュ対策</a></li>
+						<li><a href="#flow8">仮想マシンを再起動する</a></li>
+						<li><a href="#flow9">共有フォルダを作成する</a></li>
+						<li><a href="#flow10">ブラウザから見られるようにする</a></li>
+					</ul>
+			</div><!-- .col-md-2 -->
+			</aside>
+
+			<div class="col-md-10">
+				<section id="flow1">
+					<h2>Cドライブにboxを追加する (CentOS7の場合) <span class="local">Local</span></h2>
+					<p>Cドライブ直下で、$vagrant box add [ボックスの名前 パッケージ]</p>
+					<p>$vagrant box list (確認)</p>
+					<p>$vagrant box remove [ボックスの名前 パッケージ] (削除)</p>
+				</section>
+
+				<section id="flow2">
+					<h2>Cドライブに新しいフォルダをつくる <span class="local">Local</span></h2>
+					<p>$mkdir [新しいディレクトリ名] (この中に後ほど仮想マシンと同期する共有ディレクトリを設置していく)</p>
+					<p>$cd [新しいディレクトリ名]</p>
+				</section>
+
+				<section id="flow3">
+					<h2>boxを初期化する <span class="local">Local</span></h2>
+					<p>$vagrant init [ボックスの名前 パッケージ] ※さっき使ったbox名</p>
+					<p>$vagrant up 仮想マシンを起動</p>
+				</section>
+
+				<section id="flow4">
+					<h2>仮想マシンにssh接続する <span class="local">Local</span></h2>
+					<p>$vagrant ssh</p>
+				</section>
+
+				<section id="flow5">
+					<h2>仮想マシンを設定していく (以降sshで接続したまま) <span class="ssh">ssh</span></h2>
+					<p>$sudo yum -y install httpd (Apacheをインストール)</p>
+					<p>$sudo systemctl start httpd.service (Apacheを起動)</p>
+					<p>$sudo systemctl enable httpd.service (Apacheを常時起動に設定)</p>
+				</section>
+
+				<section id="flow6">
+					<h2>ファイアウォールを切る <span class="ssh">ssh</span></h2>
+					<p>$sudo systemctl stop firewalld</p>
+					<p>$sudo systemctl disable firewalld</p>
+				</section>
+
+				<section id="flow7">
+					<h2>キャッシュ対策 <span class="ssh">ssh</span></h2>
+					<p>cd /etc/httpd/conf/ (httpd.confに移動)</p>
+					<p>$ sudo vi httpd.conf (編集)</p>
+					<p>&lt;Directory /var/www/html/&gt; <br>
+						&nbsp;EnableMMAP Off <br>
+						&nbsp;EnableSendfile Off <br>
+						&lt;/Directory&gt;
+					</p>
+				</section>
+
+				<section id="flow8">
+					<h2>仮想マシンを再起動する <span class="local">Local</span></h2>
+					<p>$ exit (ssh接続から抜ける)</p>
+					<p>$ vagrant reload (再起動)</p>
+				</section>
+
+				<section id="flow9">
+					<h2>共有フォルダを作成する (ここ以降ローカルで作業) <span class="local">Local</span></h2>
+					<p>$ cd /c/[ディレクトリ名] (移動)</p>
+					<p>$ vi Vargrantfile (編集する)</p>
+					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ は[新しいディレクトリ名]。その配下に[共有したいディレクトリ名]を作成する)</p>
+					<p>$ vagrant reload (再起動)</p>
+				</section>
+
+				<section id="flow10">
+					<h2>ブラウザから見られるようにする <span class="local">Local</span></h2>
+					<p>$ cd /c/[ディレクトリ名] (移動)</p>
+					<p>$ vi Vargrantfile (編集する)</p>
+					<p> config.vm.network "private_network", ip: "192.168.33.10" のコメントアウト( # )を外す</p>
+					<p>$ vagrant reload (再起動)</p>
+				</section>
+			</div><!-- .col-md-10 -->
+		</div><!-- .row -->
+	</div><!-- .container -->
+
+</div><!-- #content -->
+<footer>
+	<p>Copyright&copy; Wataru Adachi All Right Reserved.</p>
+</footer>
+</div><!-- #wrap -->
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>
