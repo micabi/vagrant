@@ -112,8 +112,9 @@
 					<h2>共有フォルダを作成する (ここ以降ローカルで作業) <span class="local">Local</span></h2>
 					<p>$ cd /c/[ディレクトリ名] (移動)</p>
 					<p>$ vi Vargrantfile (編集する)</p>
-					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ は[新しいディレクトリ名]。その配下に[共有したいディレクトリ名]を作成する)</p>
+					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ はboxを追加(box add)した場所=C:。その配下に[共有したいディレクトリ名]を作成する)</p>
 					<p>$ vagrant reload (再起動)</p>
+					<p>centOS(linux)側の/var/www/html に置いたものと同期されるようになる。</p>
 				</section>
 
 				<section id="flow10">
