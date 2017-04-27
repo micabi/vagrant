@@ -59,18 +59,20 @@
 					<p>Cドライブ直下で、$vagrant box add [ボックスの名前 パッケージ]</p>
 					<p>$vagrant box list (確認)</p>
 					<p>$vagrant box remove [ボックスの名前 パッケージ] (削除)</p>
+					<p>※この時点でCドライブには「.vagrant」というフォルダが出来ていればOK。</p>
 				</section>
 
 				<section id="flow2">
 					<h2>Cドライブに新しいフォルダをつくる <span class="local">Local</span></h2>
-					<p>$mkdir [新しいディレクトリ名] (この中に後ほど仮想マシンと同期する共有ディレクトリを設置していく)</p>
-					<p>$cd [新しいディレクトリ名]</p>
+					<p>$mkdir [新しいディレクトリ名 ex: test] (この中に後ほど仮想マシンと同期する共有ディレクトリを設置していく)</p>
+					<p>$cd [新しいディレクトリ名 「test」] (作ったフォルダに移動)</p>
 				</section>
 
 				<section id="flow3">
 					<h2>boxを初期化する <span class="local">Local</span></h2>
 					<p>$vagrant init [ボックスの名前 パッケージ] ※さっき使ったbox名</p>
-					<p>$vagrant up 仮想マシンを起動</p>
+					<p>これでこのフォルダの中だけ仮想マシンと繋げられるようになった。</p>
+					<p>$vagrant up （仮想マシンを起動）</p>
 				</section>
 
 				<section id="flow4">
@@ -79,7 +81,7 @@
 				</section>
 
 				<section id="flow5">
-					<h2>仮想マシンを設定していく (以降sshで接続したまま) <span class="ssh">ssh</span></h2>
+					<h2>仮想マシン内の設定をしていく (以降sshで接続したまま) <span class="ssh">ssh</span></h2>
 					<p>$sudo yum -y install httpd (Apacheをインストール)</p>
 					<p>$sudo systemctl start httpd.service (Apacheを起動)</p>
 					<p>$sudo systemctl enable httpd.service (Apacheを常時起動に設定)</p>
@@ -110,9 +112,9 @@
 
 				<section id="flow9">
 					<h2>共有フォルダを作成する (ここ以降ローカルで作業) <span class="local">Local</span></h2>
-					<p>$ cd /c/[ディレクトリ名] (移動)</p>
+					<p>$ cd /c/[Cドライブにさっき作ったディレクトリ名 「test」] (移動)</p>
 					<p>$ vi Vargrantfile (編集する)</p>
-					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ はboxを追加(box add)した場所=C:。その配下に[共有したいディレクトリ名]を作成する)</p>
+					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ は$ vagrant initした場所=「C:test」。ここに入れたファイルと仮想マシンの/var/www/htmlに置いたファイルが同期する）</p>
 					<p>$ vagrant reload (再起動)</p>
 					<p>centOS(linux)側の/var/www/html に置いたものと同期されるようになる。</p>
 				</section>
@@ -124,6 +126,18 @@
 					<p> config.vm.network "private_network", ip: "192.168.33.10" のコメントアウト( # )を外す</p>
 					<p>$ vagrant reload (再起動)</p>
 				</section>
+
+				<section id="flow11">
+					<h2>C:testの下層にフォルダを置いてそれらを別々に管理する方法</h2>
+					<p>cd /c/test （testに移動）</p>
+					<p>mkdir ruby （ex: rubyフォルダを作る）</p>
+					<p>$ vagrant init [ボックスの名前 パッケージ] ※さっき使ったのと同じbox名で初期化</p>
+					<p>$ vi Vagrantfile (rubyフォルダ内に出来たVagrantfileを編集する)</p>
+					<p>config.vm.synced_folder "../ruby", "/var/www/html" (ひとつ下層なので../)</p>
+					<p>$ vagrant ssh以降は同じ。</p>
+					<p>192.168.33.10/ruby/ でブラウザからアクセスできる。</p>
+					<p>仮想マシン内では/var/www/html/ruby と同期している。</p>
+				</section><!-- #flow11 -->
 			</div><!-- .col-md-10 -->
 		</div><!-- .row -->
 	</div><!-- .container -->
