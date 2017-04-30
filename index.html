@@ -60,7 +60,7 @@
 					<p>Cドライブ直下で、$vagrant box add [ボックスの名前 パッケージ]</p>
 					<p>$vagrant box list (確認)</p>
 					<p>$vagrant box remove [ボックスの名前 パッケージ] (削除)</p>
-					<p>※この時点でCドライブには「.vagrant」というフォルダが出来ていればOK。</p>
+					<p><s>※この時点でCドライブには「.vagrant」というフォルダが出来ていればOK。</s></p>
 				</section>
 
 				<section id="flow2">
@@ -74,6 +74,7 @@
 					<p>$vagrant init [ボックスの名前 パッケージ] ※さっき使ったbox名</p>
 					<p>これでこのフォルダの中だけ仮想マシンと繋げられるようになった。</p>
 					<p>$vagrant up （仮想マシンを起動）</p>
+					<p>※この時点でtestフォルダ内に「.vagrant」というフォルダが出来ていればOK。</p>
 				</section>
 
 				<section id="flow4">
@@ -115,9 +116,10 @@
 					<h2>共有フォルダを作成する (ここ以降ローカルで作業) <span class="local">Local</span></h2>
 					<p>$ cd /c/[Cドライブにさっき作ったディレクトリ名 「test」] (移動)</p>
 					<p>$ vi Vargrantfile (編集する)</p>
-					<p>config.vm.synced_folder "./[共有したいディレクトリ名]", "/var/www/html" ( ./ は$ vagrant initした場所=「C:test」。ここに入れたファイルと仮想マシンの/var/www/htmlに置いたファイルが同期する）</p>
+					<p>config.vm.synced_folder "../[共有したいディレクトリ名 test]", "/var/www/html" ( ../ は$ vagrant add boxした場所=「C:」。ここに入れたファイルと仮想マシンの/var/www/htmlに置いたファイルが同期する）</p>
 					<p>$ vagrant reload (再起動)</p>
 					<p>centOS(linux)側の/var/www/html に置いたものと同期されるようになる。</p>
+					<p><img src="images/capture.PNG" alt="同期後" /></p>
 				</section>
 
 				<section id="flow10">
@@ -127,7 +129,7 @@
 					<p> config.vm.network "private_network", ip: "192.168.33.10" のコメントアウト( # )を外す</p>
 					<p>$ vagrant reload (再起動)</p>
 				</section>
-
+<!--
 				<section id="flow11">
 					<h2>C:testの下層にフォルダを置いてそれらを別々に管理する方法</h2>
 					<p>cd /c/test （testに移動）</p>
